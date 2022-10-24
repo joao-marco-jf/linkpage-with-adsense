@@ -35,8 +35,12 @@ const Manager: NextPage = () => {
                     <a href={`/manager/${page?.id}`}>{page?.data().pageName}</a>
                 </div>
             ))}
-            <form onSubmit={(event : any) => {
+            <form onSubmit={async(event : any) => {
                 event.preventDefault()
+
+                const q = query(collection(db, "pages"), where("pageName", "==", event.target.input.value))
+                const querySnapshot = await getDocs(q)
+
                 const docData = {
                     pageName : event.target.input.value,
                     data : [],
@@ -44,10 +48,12 @@ const Manager: NextPage = () => {
                         email: user?.email
                     }
                 }
-                addDoc(collection(db, "pages"), docData).then((doc) => {
-                    Router.push(`/manager/${doc.id}`)
-                })
-                
+
+                if(querySnapshot.docs.length == 0){
+                    addDoc(collection(db, "pages"), docData).then((doc) => {
+                        Router.push(`/manager/${doc.id}`)
+                    })
+                }
             }}>
                 <input name="input" type={"text"} placeholder="Nome da página"/>
                 <input type={"submit"} value={"Criar"}/>

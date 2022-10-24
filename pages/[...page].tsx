@@ -13,7 +13,7 @@ const Page: NextPage = (data) => {
         } else {
             Router.push("/")
         }
-    }, [])
+    }, [data])
     
     return (
         <div>

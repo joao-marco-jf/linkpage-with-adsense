@@ -169,7 +169,7 @@ const PageCreator: NextPage = (id) => {
                 Router.push(`/${pageName}`)
             }
         })
-    }, [])
+    }, [id, pageName])
 
     return (
         <div style={{margin: stateMargin}}>
